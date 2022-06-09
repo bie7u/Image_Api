@@ -11,7 +11,6 @@ from rest_framework import status
 
 TOKEN_URL = reverse('user:token')
 
-
 def create_user(**params):
     """Create and return a new user"""
     return get_user_model().objects.create_user(**params)
@@ -20,7 +19,7 @@ def create_user(**params):
 class PublicUserApiTests(TestCase):
     """Test the public features of the user API."""
 
-    def setUP(self):
+    def setUp(self):
         self.client = APIClient()
 
     def test_create_token_for_user(self):
@@ -58,3 +57,5 @@ class PublicUserApiTests(TestCase):
 
         self.assertNotIn('token', res.data)
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+
+

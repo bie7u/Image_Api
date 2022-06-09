@@ -4,6 +4,12 @@ Test for models.
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 
+from core import models
+
+def create_user(email='user@example.com', password='testpass123'):
+    """Create a test user."""
+    return get_user_model().objects.create_user(email, password)
+
 
 class ModelTest(TestCase):
     """Test models."""
@@ -46,3 +52,14 @@ class ModelTest(TestCase):
 
         self.assertTrue(user.is_superuser)
         self.assertTrue(user.is_staff)
+
+    # def test_upload_image(self):
+    #     """Test a image upload by user."""
+    #     user = get_user_model().objects.create_user(
+    #         'test@example.com',
+    #         'testpass123',
+    #     )
+    #     upload_image = models.ImgUpload(
+    #         user=user,
+    #         date=
+    #     )

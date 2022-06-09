@@ -20,6 +20,9 @@ def create_user(**params):
 class PublicUserApiTests(TestCase):
     """Test the public features of the user API."""
 
+    def setUP(self):
+        self.client = APIClient()
+
     def test_create_token_for_user(self):
         """Test generates token for valid credentials."""
         user_details = {

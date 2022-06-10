@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     # Apps
     'core.apps.CoreConfig',
     'user.apps.UserConfig',
+    'img.apps.ImgConfig',
     # Packages
     'rest_framework',
     'rest_framework.authtoken',
@@ -130,8 +131,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC__URL = 'static/static/'
-MEDIA_URL = 'static/media/'
+STATIC_URL = '/static/static/'
+MEDIA_URL = '/static/media/'
 
 MEDIA_ROOT = '/vol/web/media'
 STATIC_ROOT = '/vol/web/static'

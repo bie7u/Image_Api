@@ -57,9 +57,9 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class ImgUpload(models.Model):
-
+    """Image models."""
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    date = models.DateTimeField(auto_now_add=True)
+    added_at = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(null=True, upload_to=image_file_path)
 
     def __str__(self):

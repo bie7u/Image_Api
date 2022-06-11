@@ -64,7 +64,7 @@ class ModelTest(TestCase):
         )
         upload_image = models.ImgUpload(
             user=user,
-            date=datetime.now()
+            added_at=datetime.now()
         )
 
         self.assertEqual(str(upload_image), str(upload_image.user))

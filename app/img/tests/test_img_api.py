@@ -15,12 +15,15 @@ from django.test import TestCase
 
 from rest_framework.test import APIClient
 from rest_framework import status
+from img.serializers import ImageSerializer
 
 from core import models
 
-def image_upload_url(image_id):
+IMAGE_LIST = reverse('img:yours-images-list')
+
+def image_upload_url():
     """Create and return an image upload URL."""
-    return reverse('img:img-upload-image', args=[image_id])
+    return reverse('img:upload-image-list')
 
 def create_user(**params):
     """Create a test user."""
@@ -28,26 +31,12 @@ def create_user(**params):
 
 def create_img(user, **params):
     """Create a test image model."""
-    defaults = {
-        'date': datetime.now(),
-    }
-
-    defaults.update(params)
-
-    img = models.ImgUpload.objects.create(user=user, **defaults)
+    img = models.ImgUpload.objects.create(user=user, **params)
     return img
 
 
-class PrivateImageUploadApiTests(TestCase):
-    """Test authenticated API requests."""
-
-    def setUp(self):
-        self.client = APIClient()
-        self.user = create_user(email='user@example.com', password='test123')
-        self.client.force_authenticate(self.user)
-
-class ImageUploadTests(TestCase):
-    """Tests for the image upload API."""
+class ImageTests(TestCase):
+    """Tests for the image upload and list APIs."""
 
     def setUp(self):
         self.client = APIClient()
@@ -58,9 +47,23 @@ class ImageUploadTests(TestCase):
     def tearDown(self):
         self.imageload.delete()
 
+    def test_image_list(self):
+        """Test list user images."""
+        create_img(user=self.user)
+        create_img(user=self.user)
+
+        res = self.client.get(IMAGE_LIST)
+
+        images = models.ImgUpload.objects.filter(user=self.user)
+        serializer = ImageSerializer(images, many=True)
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(res.data, serializer.data)
+
+
     def test_upload_image(self):
         """Test uploading an image to a database."""
-        url = image_upload_url(self.imageload.id)
+        url = image_upload_url()
         with tempfile.NamedTemporaryFile(suffix='.jpg') as image_file:
             img = Image.new('RGB', (10, 10))
             img.save(image_file, format='JPEG')
@@ -69,6 +72,13 @@ class ImageUploadTests(TestCase):
             res = self.client.post(url, payload, format='multipart')
 
         self.imageload.refresh_from_db()
-        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
         self.assertIn('image', res.data)
-        self.assertTrue(os.path.exists(self.imageload.path))
+
+    def test_upload_image_bad_request(self):
+        """Test uploading invalid image."""
+        url = image_upload_url()
+        payload = {'image': 'notanimage'}
+        res = self.client.post(url, payload, format='multipart')
+
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)

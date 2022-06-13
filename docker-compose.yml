@@ -22,6 +22,29 @@ services:
     depends_on:
       - db
 
+  redis:
+    image: redis
+    ports:
+      - '6379:6379'
+
+  celery:
+    build: .
+    command: celery -A config worker -l info
+    volumes:
+      - .:/code
+    depends_on:
+      - db
+      - redis
+
+  celery-beat:
+    build: .
+    command: celery -A config beat -l info
+    volumes:
+      - .:/code
+    depends_on:
+      - db
+      - redis
+
   db:
     image: postgres:13-alpine
     volumes:
@@ -34,3 +57,4 @@ services:
 
 volumes:
   dev-db-data:
+  dev-static-data:

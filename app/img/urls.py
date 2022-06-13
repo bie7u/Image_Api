@@ -6,8 +6,8 @@ from img import views
 app_name='img'
 
 router = DefaultRouter()
-router.register('yours-images', views.ImageViewSet, basename='yours-images')
-router.register('upload-image', views.UploadImageViewset, basename='upload-image')
+router.register('images', views.ImageViewSet, basename='images')
+router.register('upload_image', views.UploadImageViewset, basename='upload-image')
 
 
 urlpatterns = [

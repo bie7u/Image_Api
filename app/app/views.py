@@ -5,13 +5,14 @@ import os
 from django.urls import reverse, reverse_lazy
 import uuid
 from core import models
+from django.contrib.auth.models import User, Group
+from django.urls import get_resolver
+from PIL import Image
+import tempfile
 # Test view
 def test(request):
-    reverse('img:yours-images-list')
-    for i in models.ImgUpload.objects.all():
-        print(os.path.exists(i.image.path))
-        print(i.image.path)
-
-    ext = os.path.basename('filename/sfsad/sfsf.txt')
-    print(ext)
+    print(request.user.groups.get())
+    for i in models.TimeGenerateImg.objects.all():
+        print(i.delete())
+        break
     return HttpResponse('siema')

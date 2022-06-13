@@ -6,6 +6,8 @@ from core.models import ImgUpload
 
 
 class ImageSerializer(serializers.ModelSerializer):
+    """Upload original image serializer."""
+    image = serializers.ImageField(required=True)
 
     class Meta:
         model = ImgUpload

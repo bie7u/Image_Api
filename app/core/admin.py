@@ -48,3 +48,5 @@ class UserAdmin(BaseUserAdmin):
 
 admin.site.register(models.User, UserAdmin)
 admin.site.register(models.ImgUpload)
+admin.site.register(models.ImgThumbnail)
+admin.site.register(models.TimeGenerateImg)

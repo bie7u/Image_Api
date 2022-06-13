@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 # Celery
-from celery.schedules import crontab
 
 import os
 import psycopg2
@@ -48,9 +47,11 @@ INSTALLED_APPS = [
     'user.apps.UserConfig',
     'img.apps.ImgConfig',
     # Packages
+    'celery',
     'rest_framework',
     'rest_framework.authtoken',
     'drf_spectacular',
+
 ]
 
 MIDDLEWARE = [
@@ -94,7 +95,6 @@ DATABASES = {
         'NAME': os.environ.get('DB_NAME'),
         'USER': os.environ.get('DB_USER'),
         'PASSWORD': os.environ.get('DB_PASS'),
-
     }
 }
 
@@ -163,9 +163,9 @@ CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 
-CELERY_BEAT_SCHEDULE = {
-    'hello': {
-        'task': 'app.tasks.hello',
-        'schedule': crontab()  # execute every minute
-    }
-}
+# CELERY_BEAT_SCHEDULE = {
+#     'hello': {
+#         'task': 'app.tasks.hello',
+#         'schedule': crontab()  # execute every minute
+#     }
+# }

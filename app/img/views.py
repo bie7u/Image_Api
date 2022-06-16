@@ -6,8 +6,6 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-from rest_framework import viewsets, mixins
-
 
 from django.http import HttpResponse, JsonResponse
 
@@ -60,7 +58,7 @@ class ImageViewSet(viewsets.GenericViewSet):
             image_type = serializer.validated_data['image_type']
             original_image = serializer.validated_data['original_image']
             time_of_expiry = serializer.validated_data['time_of_expiry']
-            if original_image.id not in list(models.ImgUpload.objects.filter(user=request.user).values_list('id', flat=True)): # Validation
+            if original_image.id not in list(models.ImgUpload.objects.filter(user=request.user).values_list('id', flat=True)):  # Validation
                 return HttpResponse("You don't have permission to this image.")
 
             link = models.CustomImage.make_thumbnail(self,

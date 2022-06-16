@@ -94,7 +94,8 @@ class FunctionsTest(TestCase):
         self.group.save()
         self.user.groups.add(self.group)
         self.user.save()
-        images = create_premium_tier(user=self.user)  # Used Premium tier because this levels have same thumbnails.
+        # Used Premium tier because this levels have same thumbnails.
+        images = create_premium_tier(user=self.user)
 
         links = give_links_to_images(user=self.user,
                                      request=request,
@@ -133,7 +134,8 @@ class FunctionsTest(TestCase):
                                      model1=ImgUpload,
                                      model2=ImgThumbnail)
 
-        self.assertEqual((len(images) - 1), len(list(links.values())[0][0]))  # Minus one because basic tier have accesss only to 200px thumbnail
+        # Minus one because basic tier have accesss only to 200px thumbnail
+        self.assertEqual((len(images) - 1), len(list(links.values())[0][0]))
 
     def test_get_height(self):
         """Basic height function test."""

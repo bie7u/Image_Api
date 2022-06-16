@@ -169,10 +169,10 @@ class TimeGenerateImg(models.Model):
     original_image = models.ForeignKey(ImgUpload, on_delete=models.CASCADE)
     image = models.ImageField(null=True, upload_to=image_file_path)
     image_type = models.CharField(null=True,
-                                 blank=True,
-                                 max_length=255,
-                                 choices=KIND_OF_IMAGE,
-                                 default=KIND_OF_IMAGE[0][0])
+                                  blank=True,
+                                  max_length=255,
+                                  choices=KIND_OF_IMAGE,
+                                  default=KIND_OF_IMAGE[0][0])
     time_of_expiry = models.IntegerField(validators=[MinValueValidator(300),
                                          MaxValueValidator(30000)])
     added_at = models.DateTimeField(auto_now_add=True)

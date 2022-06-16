@@ -15,7 +15,8 @@ def give_yours_images(model, user):  # model = ImgUpload
     return user_files
 
 
-def give_links_to_images(user, request, model1, model2):  # model1 = ImgUpload, model2 = ImgThumbnail
+# model1 = ImgUpload, model2 = ImgThumbnail
+def give_links_to_images(user, request, model1, model2):
     """Render a json file with links to images."""
     all_links = {}
     image_id = None

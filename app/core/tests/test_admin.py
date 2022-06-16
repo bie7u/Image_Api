@@ -26,7 +26,8 @@ class AdminSiteTests(TestCase):
 
     def test_users_list(self):
         """Test that users are listed on page."""
-        url = reverse('admin:core_user_changelist')  # More info https://www.mlr2d.org/contents/djangorestapi/05_modifying_djangoadmininterface
+        # More info https://www.mlr2d.org/contents/djangorestapi/05_modifying_djangoadmininterface
+        url = reverse('admin:core_user_changelist')
         res = self.client.get(url)
 
         self.assertContains(res, self.user.name)

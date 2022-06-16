@@ -59,7 +59,8 @@ class ImageViewSet(viewsets.GenericViewSet):
             original_image = serializer.validated_data['original_image']
             time_of_expiry = serializer.validated_data['time_of_expiry']
             qs = ImgUpload.objects.filter
-            user_images = list(qs(user=request.user).values_list('id', flat=True))
+            user_images = list(qs(user=request.user).values_list('id',
+                                                                 flat=True))
             if original_image.id not in user_images:  # Validation
                 return HttpResponse("You don't have permission to this image.")
 

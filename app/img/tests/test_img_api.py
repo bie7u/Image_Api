@@ -6,7 +6,6 @@ from PIL import Image
 import json
 
 from django.contrib.auth import get_user_model
-from django.http import HttpResponse
 from django.urls import reverse
 from django.test import TestCase
 from django.test.client import RequestFactory
@@ -15,7 +14,6 @@ from django.contrib.auth.models import Group
 
 from rest_framework.test import APIClient
 from rest_framework import status
-from rest_framework.test import force_authenticate
 
 from core.models import ImgUpload, ImgThumbnail
 
@@ -40,6 +38,7 @@ def create_original_image(user):
                                          image=ImageFile(image_file))
         return image
 
+
 def create_premium_tier(user):
     """Create a Premium tier images."""
     with tempfile.NamedTemporaryFile(suffix='.jpg') as image_file:
@@ -57,6 +56,7 @@ def create_premium_tier(user):
                                              image=ImageFile(image_file),
                                              image_type='3')
         return [image, image2, image3]
+
 
 class ImageTests(TestCase):
     """Tests for the image upload and list APIs."""

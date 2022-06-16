@@ -13,6 +13,7 @@ from django.test.client import RequestFactory
 
 from core.models import ImgUpload, ImgThumbnail, TimeGenerateImg
 
+
 def create_original_image(user):
     """Create a original image."""
     with tempfile.NamedTemporaryFile(suffix='.jpg') as image_file:
@@ -38,6 +39,7 @@ def create_thumbnail(user, image_type):
                                                   image_type=image_type)
         return thumb_image
 
+
 def create_expiry_image(user, image_type, time_of_expiry):
     """Create a original image."""
     with tempfile.NamedTemporaryFile(suffix='.jpg') as image_file:
@@ -46,12 +48,12 @@ def create_expiry_image(user, image_type, time_of_expiry):
         image_file.seek(0)
         image = ImgUpload.objects.create(user=user,
                                          image=ImageFile(image_file))
-        thumb_image = TimeGenerateImg.objects.create(user=user,
-                                                     original_image=image,
-                                                     image=ImageFile(image_file),
-                                                     image_type=image_type,
-                                                     time_of_expiry=time_of_expiry)
-        return thumb_image
+        img = TimeGenerateImg.objects.create(user=user,
+                                             original_image=image,
+                                             image=ImageFile(image_file),
+                                             image_type=image_type,
+                                             time_of_expiry=time_of_expiry)
+        return img
 
 class AdminSiteTests(TestCase):
     """Tests for Django admin."""
@@ -138,7 +140,7 @@ class AdminSiteTests(TestCase):
 
         self.assertEqual(res.status_code, 200)
 
-    def test_create_thumbnail_page(self):
+    def test_create_expiryty_image_page(self):
         """Test the create user page works."""
         url = reverse('admin:core_timegenerateimg_add')
         res = self.client.get(url)

@@ -178,4 +178,4 @@ class TimeGenerateImg(models.Model):
     added_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"User: {str(self.user)} - {str(self.original_image)} - {str(self.time_of_expiry)}"
+        return f"User: {str(self.user)} - {str(self.time_of_expiry)}"

@@ -45,10 +45,10 @@ def give_links_to_images(user, request, model1, model2):
 
 
 def get_height(image_type):
-        """Return a height - image type."""
-        if image_type == '1':
-            return None
-        elif image_type == '2':
-            return 200
-        elif image_type == '3':
-            return 400
+    """Return a height - image type."""
+    if image_type == '1':
+        return None
+    elif image_type == '2':
+        return 200
+    elif image_type == '3':
+        return 400

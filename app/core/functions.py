@@ -3,7 +3,7 @@ All custom functions used in project.
 """
 
 
-def give_yours_images(model, user): # model = ImgUpload
+def give_yours_images(model, user):  # model = ImgUpload
     """Return all user images with links."""
     queryset = model.objects.filter(user=user)
     user_files = {}

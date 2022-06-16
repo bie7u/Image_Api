@@ -78,8 +78,7 @@ class ModelTest(TestCase):
         mock_uuid.return_value = uuid
         file_path = models.image_file_path(None, 'example.jpg')
 
-        self.assertEqual(file_path,
-                         f'uploads/user/unique_id--{uuid}__file_name--example.jpg')
+        self.assertEqual(file_path, f'uploads/user/unique_id--{uuid}__file_name--example.jpg')
 
     def test_img_thumbnail(self):
         """Test thumbnail model."""

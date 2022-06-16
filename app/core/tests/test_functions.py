@@ -38,7 +38,8 @@ def create_premium_tier(user):
         img = Image.new('RGB', (10, 10))
         img.save(image_file, format='JPEG')
         image_file.seek(0)
-        image = ImgUpload.objects.create(user=user, image=ImageFile(image_file))
+        image = ImgUpload.objects.create(user=user,
+                                         image=ImageFile(image_file))
         image2 = ImgThumbnail.objects.create(user=user,
                                              original_image=image,
                                              image=ImageFile(image_file),
@@ -56,7 +57,8 @@ def create_basic_tier(user):
         img = Image.new('RGB', (10, 10))
         img.save(image_file, format='JPEG')
         image_file.seek(0)
-        image = ImgUpload.objects.create(user=user, image=ImageFile(image_file))
+        image = ImgUpload.objects.create(user=user,
+                                         image=ImageFile(image_file))
         image2 = ImgThumbnail.objects.create(user=user,
                                              original_image=image,
                                              image=ImageFile(image_file),

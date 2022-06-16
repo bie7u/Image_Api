@@ -55,6 +55,7 @@ def create_expiry_image(user, image_type, time_of_expiry):
                                              time_of_expiry=time_of_expiry)
         return img
 
+
 class AdminSiteTests(TestCase):
     """Tests for Django admin."""
 
@@ -119,7 +120,7 @@ class AdminSiteTests(TestCase):
         self.assertContains(res, thumb.original_image.id)
         self.assertContains(res, image_url)
 
-    def test_img_thumbnail_list(self):
+    def test_expiry_image_list(self):
         """Test that thumbnails are listed on page."""
         thumb = create_expiry_image(user=self.user,
                                     image_type='2',

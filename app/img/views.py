@@ -12,7 +12,6 @@ from django.http import HttpResponse, JsonResponse
 from .serializers import (ImageSerializer,
                           TimeGenerateImgSerializer)
 from core.models import ImgUpload, ImgThumbnail, TimeGenerateImg, CustomImage
-from core import models
 
 from core.functions import (give_yours_images,
                             give_links_to_images,
@@ -59,7 +58,9 @@ class ImageViewSet(viewsets.GenericViewSet):
             image_type = serializer.validated_data['image_type']
             original_image = serializer.validated_data['original_image']
             time_of_expiry = serializer.validated_data['time_of_expiry']
-            if original_image.id not in list(ImgUpload.objects.filter(user=request.user).values_list('id', flat=True)):  # Validation
+            qs = ImgUpload.objects.filter
+            user_images = list(qs(user=request.user).values_list('id', flat=True))
+            if original_image.id not in user_images:  # Validation
                 return HttpResponse("You don't have permission to this image.")
 
             link = CustomImage.make_thumbnail(self,

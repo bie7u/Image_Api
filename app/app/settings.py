@@ -10,9 +10,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
-# Celery
-
-import os
 import psycopg2
 from pathlib import Path
 
@@ -41,17 +38,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
     # Apps
     'core.apps.CoreConfig',
     'user.apps.UserConfig',
     'img.apps.ImgConfig',
     # Packages
-    'celery',
     'rest_framework',
     'rest_framework.authtoken',
     'drf_spectacular',
-
 ]
 
 MIDDLEWARE = [
@@ -91,10 +85,14 @@ WSGI_APPLICATION = 'app.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'HOST': os.environ.get('DB_HOST'),
-        'NAME': os.environ.get('DB_NAME'),
-        'USER': os.environ.get('DB_USER'),
-        'PASSWORD': os.environ.get('DB_PASS'),
+        # 'HOST': os.environ.get('DB_HOST'),
+        # 'NAME': os.environ.get('DB_NAME'),
+        # 'USER': os.environ.get('DB_USER'),
+        # 'PASSWORD': os.environ.get('DB_PASS'),
+        'HOST': 'db',
+        'NAME': 'devdb',
+        'USER': 'devuser',
+        'PASSWORD': 'changeme',
     }
 }
 
@@ -127,7 +125,9 @@ TIME_ZONE = 'Europe/Warsaw'
 
 USE_I18N = True
 
-USE_TZ = True
+USE_L10N = True
+
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)

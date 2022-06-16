@@ -20,9 +20,9 @@ from PIL import Image
 
 
 KIND_OF_IMAGE = (
-        (1, 'original'),
-        (2, '200px'),
-        (3, '400px'),
+        ('1', 'original'),
+        ('2', '200px'),
+        ('3', '400px'),
     )
 
 def image_file_path(instance, filename):
@@ -32,6 +32,59 @@ def image_file_path(instance, filename):
 
     return os.path.join('uploads', 'user', filename)
 
+
+class CustomImage:
+
+    def make_thumbnail(self, image_type, original_image, image_path, model, user, width=None, height=None, **params):
+        """Create a thumbnail with special parameters."""
+        with NamedTemporaryFile(suffix='.jpg') as image_file:
+            img = Image.open(f"/vol/web/media/{str(image_path)}")
+            if img.mode != 'RGB':
+                img = img.convert('RGB')
+            if width == None:
+                width = img.size[0]
+            else:
+                width=width
+            if height == None:
+                height = img.size[1]
+            else:
+                height=height
+
+            img = img.resize((width, height), Image.ANTIALIAS)
+            img.save(image_file, format='JPEG')
+            image_file.seek(0)
+            convert_image = model.objects.create(user=user, original_image=original_image, image=ImageFile(image_file), image_type=image_type, **params)
+            convert_image.save()
+            return convert_image
+
+    def create_thumbnail_while_upload(self, serializer, user):
+        """Create a thumbnail when uploaded a new image."""
+        original_image = serializer.instance
+        image_path = serializer.instance.image
+
+        if str(self.request.user.groups.get()) == 'Basic':
+            CustomImage.make_thumbnail(self,
+                                       height=200,
+                                       image_type=2,
+                                       original_image=original_image,
+                                       image_path=image_path,
+                                       model=ImgThumbnail,
+                                       user=user)
+        elif str(self.request.user.groups.get()) == 'Premium' or 'Enterprise':
+            CustomImage.make_thumbnail(self,
+                                       height=200,
+                                       image_type=2,
+                                       original_image=original_image,
+                                       image_path=image_path,
+                                       model=ImgThumbnail,
+                                       user=user)
+            CustomImage.make_thumbnail(self,
+                                       height=400,
+                                       image_type=3,
+                                       original_image=original_image,
+                                       image_path=image_path,
+                                       model=ImgThumbnail,
+                                       user=user)
 
 class UserManager(BaseUserManager):
     """Manager for users."""
@@ -54,28 +107,6 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
 
         return user
-
-    def create_thumbnail(self, serializer): #not test!!!
-        """Create a thumbnail of image."""
-
-        def make_thumbnail(height, image_type, original_image, image_path):
-            with NamedTemporaryFile(suffix='.jpg') as image_file:
-                img = Image.open(f"/vol/web/media/{str(image_path)}")
-                size = img.size
-                img = img.resize((size[0], height), Image.ANTIALIAS)
-                img.save(image_file, format='JPEG')
-                image_file.seek(0)
-                convert_image = ImgThumbnail.objects.create(user=self.request.user, original_image=original_image, image=ImageFile(image_file), image_type=image_type)
-                convert_image.save()
-
-        original_image = serializer.instance
-        image_path = serializer.instance.image
-
-        if str(self.request.user.groups.get()) == 'Basic':
-            make_thumbnail(200, 2, original_image, image_path)
-        elif str(self.request.user.groups.get()) == 'Premium' or 'Enterprise':
-            make_thumbnail(200, 2, original_image, image_path)
-            make_thumbnail(400, 3, original_image, image_path)
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -117,11 +148,11 @@ class ImgThumbnail(models.Model):
 class TimeGenerateImg(models.Model):
     """Image generate for particular seconds"""
 
-    user = user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     original_image = models.ForeignKey(ImgUpload, on_delete=models.CASCADE)
     image = models.ImageField(null=True, upload_to=image_file_path)
     image_type = models.CharField(null=True, blank=True, max_length=255, choices=KIND_OF_IMAGE, default=KIND_OF_IMAGE[0][0])
-    time_of_expiry = models.IntegerField(validators=[MinValueValidator(300), MaxValueValidator(30000)])
+    time_of_expiry = models.IntegerField(validators=[MinValueValidator(60), MaxValueValidator(30000)])
     added_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

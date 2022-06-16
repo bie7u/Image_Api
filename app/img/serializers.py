@@ -11,12 +11,13 @@ class ImageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ImgUpload
-        fields = ( 'image',)
+        fields = ('image',)
 
     def to_representation(self, instance):
         ret = super().to_representation(instance)
         ret['image'] = 'The image uploaded.'
         return ret
+
 
 class TimeGenerateImgSerializer(serializers.ModelSerializer):
     """Create a expiry image serializer."""

@@ -15,7 +15,7 @@ class ImgThumbnailAdminForm(forms.ModelForm):
     class Meta:
         model = ImgThumbnail
         fields = '__all__'
-        exclude = ['user','image', 'image_type']
+        exclude = ['user', 'image', 'image_type']
 
 
 class TimeGenerateImgAdminForm(forms.ModelForm):

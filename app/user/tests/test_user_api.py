@@ -14,6 +14,7 @@ from rest_framework import status
 TOKEN_URL = reverse('user:token')
 GET_GROUP = reverse('user:user-group')
 
+
 def create_user(**params):
     """Create and return a new user"""
     return get_user_model().objects.create_user(**params)

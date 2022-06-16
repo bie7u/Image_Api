@@ -15,9 +15,11 @@ from core.models import ImgThumbnail, ImgUpload
 
 from core.functions import give_yours_images, give_links_to_images, get_height
 
+
 def create_user(**params):
     """Create a test user."""
     return get_user_model().objects.create_user(**params)
+
 
 def create_original_image(user):
     """Create a original image."""
@@ -25,8 +27,10 @@ def create_original_image(user):
         img = Image.new('RGB', (10, 10))
         img.save(image_file, format='JPEG')
         image_file.seek(0)
-        image = ImgUpload.objects.create(user=user, image=ImageFile(image_file))
+        image = ImgUpload.objects.create(user=user,
+                                         image=ImageFile(image_file))
         return image
+
 
 def create_premium_tier(user):
     """Create a Premium tier images."""
@@ -35,9 +39,16 @@ def create_premium_tier(user):
         img.save(image_file, format='JPEG')
         image_file.seek(0)
         image = ImgUpload.objects.create(user=user, image=ImageFile(image_file))
-        image2 = ImgThumbnail.objects.create(user=user, original_image=image, image=ImageFile(image_file), image_type='2')
-        image3 = ImgThumbnail.objects.create(user=user, original_image=image, image=ImageFile(image_file), image_type='3')
+        image2 = ImgThumbnail.objects.create(user=user,
+                                             original_image=image,
+                                             image=ImageFile(image_file),
+                                             image_type='2')
+        image3 = ImgThumbnail.objects.create(user=user,
+                                             original_image=image,
+                                             image=ImageFile(image_file),
+                                             image_type='3')
         return [image, image2, image3]
+
 
 def create_basic_tier(user):
     """Create a Basic tier images."""
@@ -46,7 +57,10 @@ def create_basic_tier(user):
         img.save(image_file, format='JPEG')
         image_file.seek(0)
         image = ImgUpload.objects.create(user=user, image=ImageFile(image_file))
-        image2 = ImgThumbnail.objects.create(user=user, original_image=image, image=ImageFile(image_file), image_type='2')
+        image2 = ImgThumbnail.objects.create(user=user,
+                                             original_image=image,
+                                             image=ImageFile(image_file),
+                                             image_type='2')
         return [image, image2]
 
 
@@ -78,9 +92,12 @@ class FunctionsTest(TestCase):
         self.group.save()
         self.user.groups.add(self.group)
         self.user.save()
-        images = create_premium_tier(user=self.user) # Used Premium tier because this levels have same thumbnails.
+        images = create_premium_tier(user=self.user)  # Used Premium tier because this levels have same thumbnails.
 
-        links = give_links_to_images(user=self.user, request=request, model1=ImgUpload, model2=ImgThumbnail)
+        links = give_links_to_images(user=self.user,
+                                     request=request,
+                                     model1=ImgUpload,
+                                     model2=ImgThumbnail)
 
         self.assertEqual(len(images), len(list(links.values())[0][0]))
 
@@ -93,7 +110,10 @@ class FunctionsTest(TestCase):
         self.user.save()
         images = create_premium_tier(user=self.user)
 
-        links = give_links_to_images(user=self.user, request=request, model1=ImgUpload, model2=ImgThumbnail)
+        links = give_links_to_images(user=self.user,
+                                     request=request,
+                                     model1=ImgUpload,
+                                     model2=ImgThumbnail)
 
         self.assertEqual(len(images), len(list(links.values())[0][0]))
 
@@ -106,9 +126,12 @@ class FunctionsTest(TestCase):
         self.user.save()
         images = create_basic_tier(user=self.user)
 
-        links = give_links_to_images(user=self.user, request=request, model1=ImgUpload, model2=ImgThumbnail)
+        links = give_links_to_images(user=self.user,
+                                     request=request,
+                                     model1=ImgUpload,
+                                     model2=ImgThumbnail)
 
-        self.assertEqual((len(images) - 1), len(list(links.values())[0][0])) # Minus one because basic tier have accesss only to 200px thumbnail
+        self.assertEqual((len(images) - 1), len(list(links.values())[0][0]))  # Minus one because basic tier have accesss only to 200px thumbnail
 
     def test_get_height(self):
         """Basic height function test."""

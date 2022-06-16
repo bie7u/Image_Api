@@ -19,5 +19,7 @@ import sys
 from core import models
 
 def test(request):
-
+    b = 2 + \
+        2
+    print(b)
     return HttpResponse('fsd')

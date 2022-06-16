@@ -14,6 +14,7 @@ from app.forms import ImgThumbnailAdminForm, TimeGenerateImgAdminForm
 
 from core.functions import get_height
 
+
 class UserAdmin(BaseUserAdmin):
     """Define the admin pages for users"""
     ordering = ['id']
@@ -93,7 +94,9 @@ class TimeGenerateImageAdmin(admin.ModelAdmin):
     """Generate expiry image by admin."""
     form = TimeGenerateImgAdminForm
     readonly_fields = ['image', 'added_at']
-    list_display = ('user', 'image_type', 'original_image_id', 'get_link', 'expiry_hour')
+    list_display = ('user', 'image_type',
+                    'original_image_id',
+                    'get_link', 'expiry_hour')
 
     def __init__(self, model, admin_site):
         self.request = None
@@ -131,7 +134,7 @@ class TimeGenerateImageAdmin(admin.ModelAdmin):
 class OriginalImageAdmin(admin.ModelAdmin):
     """Show urls to original image."""
     date_hierarchy = 'added_at'
-    list_display = ('user','get_link', 'added_at', 'id')
+    list_display = ('user', 'get_link', 'added_at', 'id')
 
     def __init__(self, model, admin_site):
         self.request = None

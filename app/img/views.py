@@ -10,7 +10,6 @@ from rest_framework import viewsets, mixins
 
 
 from django.http import HttpResponse, JsonResponse
-from django.core.files.temp import NamedTemporaryFile
 
 from .serializers import (ImageSerializer,
                           TimeGenerateImgSerializer)
@@ -28,10 +27,12 @@ class ImageViewSet(viewsets.GenericViewSet):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
-    @action(detail=False, methods=['get'], url_path='yours_images', url_name="yours_images") #not test !!!!
+    @action(detail=False, methods=['get'],
+            url_path='yours_images', url_name="yours_images")
     def yours_images(self, request):
         """Return a user images."""
-        user_files = give_yours_images(model=models.ImgUpload, user=request.user)
+        user_files = give_yours_images(model=models.ImgUpload,
+                                       user=request.user)
 
         return JsonResponse(user_files)
 
@@ -45,7 +46,8 @@ class ImageViewSet(viewsets.GenericViewSet):
 
         return Response(all_user_links)
 
-    @action(detail=False, methods=['post'], url_path='get_expiry_link', url_name='get_expiry_link')
+    @action(detail=False, methods=['post'],
+            url_path='get_expiry_link', url_name='get_expiry_link')
     def create_expiry_link(self, request):
         """Create a expiry url to image."""
         if not str(request.user.groups.get()) == 'Enterprise':
@@ -62,25 +64,28 @@ class ImageViewSet(viewsets.GenericViewSet):
                 return HttpResponse("You don't have permission to this image.")
 
             link = models.CustomImage.make_thumbnail(self,
-                                             height=get_height(image_type),
-                                             image_type=image_type,
-                                             original_image=original_image,
-                                             image_path=original_image.image,
-                                             model=models.TimeGenerateImg,
-                                             time_of_expiry=time_of_expiry,
-                                             user=request.user)
+                                                     height=get_height(image_type),
+                                                     image_type=image_type,
+                                                     original_image=original_image,
+                                                     image_path=original_image.image,
+                                                     model=models.TimeGenerateImg,
+                                                     time_of_expiry=time_of_expiry,
+                                                     user=request.user)
 
-            return Response({'expiry_link': request.build_absolute_uri(link.image.url)})
+            return Response({'expiry_link':
+                             request.build_absolute_uri(link.image.url)})
 
 
-class UploadImageViewset(mixins.CreateModelMixin, # not test!!!
+class UploadImageViewset(mixins.CreateModelMixin,
                          viewsets.GenericViewSet):
 
     serializer_class = ImageSerializer
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
-    def perform_create(self, serializer): # not test!!!
+    def perform_create(self, serializer):
         """Upload image."""
         serializer.save(user=self.request.user)
-        models.CustomImage.create_thumbnail_while_upload(self, serializer, user=self.request.user)
+        models.CustomImage.create_thumbnail_while_upload(self,
+                                                         serializer,
+                                                         user=self.request.user)

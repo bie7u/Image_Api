@@ -46,40 +46,6 @@ class ImageTests(TestCase):
         self.client.force_authenticate(self.user)
         self.imageload = create_img(user=self.user)
 
-    # def tearDown(self):
-    #     self.imageload.delete()
-
-    # def test_yours_images(self):
-    #     """Test list user images."""
-    #     with tempfile.NamedTemporaryFile(suffix='.jpg') as image_file:
-    #         img = Image.new('RGB', (10, 10))
-    #         img.save(image_file, format='JPEG')
-    #         image_file.seek(0)
-    #         create_img(user=self.user, image=image_file)
-
-
-    #     res = self.client.get(IMAGE_LIST)
-
-    #     images = models.ImgUpload.objects.filter(user=self.user)
-
-    #     self.assertEqual(res.status_code, status.HTTP_200_OK)
-        # self.assertEqual(res.data, serializer.data)
-
-
-    # def test_upload_image(self):
-    #     """Test uploading an image to a database."""
-    #     url = image_upload_url()
-    #     with tempfile.NamedTemporaryFile(suffix='.jpg') as image_file:
-    #         img = Image.new('RGB', (10, 10))
-    #         img.save(image_file, format='JPEG')
-    #         image_file.seek(0)
-    #         payload = {'image': image_file}
-    #         res = self.client.post(url, payload, format='multipart')
-
-    #     self.imageload.refresh_from_db()
-    #     self.assertEqual(res.status_code, status.HTTP_201_CREATED)
-    #     self.assertIn('image', res.data)
-
     def test_upload_image_bad_request(self):
         """Test uploading invalid image."""
         url = image_upload_url()

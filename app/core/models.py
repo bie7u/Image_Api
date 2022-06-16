@@ -25,6 +25,7 @@ KIND_OF_IMAGE = (
         ('3', '400px'),
     )
 
+
 def image_file_path(instance, filename):
     """Generate file path for new image."""
     ext = os.path.basename(filename)
@@ -34,26 +35,34 @@ def image_file_path(instance, filename):
 
 
 class CustomImage:
+    """Methods use to custom image."""
 
-    def make_thumbnail(self, image_type, original_image, image_path, model, user, width=None, height=None, **params):
+    def make_thumbnail(self, image_type,
+                       original_image, image_path,
+                       model, user,
+                       width=None, height=None, **params):
         """Create a thumbnail with special parameters."""
         with NamedTemporaryFile(suffix='.jpg') as image_file:
             img = Image.open(f"/vol/web/media/{str(image_path)}")
             if img.mode != 'RGB':
                 img = img.convert('RGB')
-            if width == None:
+            if width is None:
                 width = img.size[0]
             else:
-                width=width
-            if height == None:
+                width = width
+            if height is None:
                 height = img.size[1]
             else:
-                height=height
+                height = height
 
             img = img.resize((width, height), Image.ANTIALIAS)
             img.save(image_file, format='JPEG')
             image_file.seek(0)
-            convert_image = model.objects.create(user=user, original_image=original_image, image=ImageFile(image_file), image_type=image_type, **params)
+            convert_image = model.objects.create(user=user,
+                                                 original_image=original_image,
+                                                 image=ImageFile(image_file),
+                                                 image_type=image_type,
+                                                 **params)
             convert_image.save()
             return convert_image
 
@@ -85,6 +94,7 @@ class CustomImage:
                                        image_path=image_path,
                                        model=ImgThumbnail,
                                        user=user)
+
 
 class UserManager(BaseUserManager):
     """Manager for users."""
@@ -124,7 +134,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 class ImgUpload(models.Model):
     """Image model."""
 
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE)
     added_at = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(null=True, upload_to=image_file_path)
 
@@ -135,10 +146,15 @@ class ImgUpload(models.Model):
 class ImgThumbnail(models.Model):
     """Image thumbnail model."""
 
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE)
     original_image = models.ForeignKey(ImgUpload, on_delete=models.CASCADE)
     image = models.ImageField(null=True, upload_to=image_file_path)
-    image_type = models.CharField(null=True, blank=True, max_length=255, choices=KIND_OF_IMAGE, default=KIND_OF_IMAGE[0][0])
+    image_type = models.CharField(null=True,
+                                  blank=True,
+                                  max_length=255,
+                                  choices=KIND_OF_IMAGE,
+                                  default=KIND_OF_IMAGE[0][0])
     added_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -148,11 +164,17 @@ class ImgThumbnail(models.Model):
 class TimeGenerateImg(models.Model):
     """Image generate for particular seconds"""
 
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE)
     original_image = models.ForeignKey(ImgUpload, on_delete=models.CASCADE)
     image = models.ImageField(null=True, upload_to=image_file_path)
-    image_type = models.CharField(null=True, blank=True, max_length=255, choices=KIND_OF_IMAGE, default=KIND_OF_IMAGE[0][0])
-    time_of_expiry = models.IntegerField(validators=[MinValueValidator(60), MaxValueValidator(30000)])
+    image_type = models.CharField(null=True,
+                                 blank=True,
+                                 max_length=255,
+                                 choices=KIND_OF_IMAGE,
+                                 default=KIND_OF_IMAGE[0][0])
+    time_of_expiry = models.IntegerField(validators=[MinValueValidator(300),
+                                         MaxValueValidator(30000)])
     added_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

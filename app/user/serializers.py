@@ -1,7 +1,7 @@
 """
 Serializers for the user API.
 """
-from django.contrib.auth import get_user_model, authenticate
+from django.contrib.auth import authenticate
 from django.utils.translation import gettext as _
 from rest_framework import serializers
 

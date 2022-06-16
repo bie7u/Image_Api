@@ -1,15 +1,14 @@
 """
 Test for models.
 """
-from email.mime import image
 from unittest.mock import patch
 from django.test import TestCase
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import Group
 
 from datetime import datetime
 
 from core import models
+
 
 def create_user(email='user@example.com', password='testpass123'):
     """Create a test user."""
@@ -69,7 +68,8 @@ class ModelTest(TestCase):
             added_at=datetime.now()
         )
 
-        self.assertEqual(str(upload_image), str(upload_image.user) + ' ' + str(upload_image.id))
+        self.assertEqual(str(upload_image),
+                         str(upload_image.user) + ' ' + str(upload_image.id))
 
     @patch('core.models.uuid.uuid4')
     def test_file_name_uuid(self, mock_uuid):
@@ -78,7 +78,8 @@ class ModelTest(TestCase):
         mock_uuid.return_value = uuid
         file_path = models.image_file_path(None, 'example.jpg')
 
-        self.assertEqual(file_path, f'uploads/user/unique_id--{uuid}__file_name--example.jpg')
+        self.assertEqual(file_path,
+                         f'uploads/user/unique_id--{uuid}__file_name--example.jpg')
 
     def test_img_thumbnail(self):
         """Test thumbnail model."""

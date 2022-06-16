@@ -34,7 +34,8 @@ class ImageViewSet(viewsets.GenericViewSet):
 
         return JsonResponse(user_files)
 
-    @action(detail=False, methods=['get'], url_path='links_to_images',)
+    @action(detail=False, methods=['get'],
+            url_path='links_to_images', url_name='links_to_images')
     def links_to_images(self, request):
         """Return a links to images in dependences from a user group."""
         all_user_links = give_links_to_images(user=request.user,

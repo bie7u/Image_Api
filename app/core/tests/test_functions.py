@@ -3,6 +3,7 @@ Test custom functions.
 """
 import tempfile
 from PIL import Image
+
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from django.core.files.images import ImageFile

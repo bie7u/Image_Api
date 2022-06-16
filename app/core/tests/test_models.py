@@ -97,3 +97,22 @@ class ModelTest(TestCase):
 
         self.assertEqual(original_image.user, thumbnail.user)
         self.assertEqual(thumbnail.original_image, original_image)
+
+    def test_generate_image(self):
+        """Test expiry image model."""
+        user = get_user_model().objects.create_user(
+            'test@example.com',
+            'testpass123',
+        )
+
+        original_image = models.ImgUpload.objects.create(
+            user=user
+        )
+        expiry_image = models.TimeGenerateImg.objects.create(
+            user=user,
+            original_image=original_image,
+            time_of_expiry=300
+        )
+
+        self.assertEqual(original_image.user, expiry_image.user)
+        self.assertEqual(expiry_image.original_image, original_image)

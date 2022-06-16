@@ -24,7 +24,6 @@ services:
       - db
       - redis
 
-
   db:
     image: postgres:13-alpine
     volumes:
@@ -46,13 +45,6 @@ services:
      - ./app:/app
      - dev-static-data:/vol/web
     command: celery -A app worker -l info
-
-
-    environment:
-      - DB_HOST=db
-      - DB_NAME=devdb
-      - DB_USER=devuser
-      - DB_PASS=changeme
     depends_on:
       - db
       - redis

@@ -43,7 +43,7 @@ Clone a repository:
 -Navigate to local procject repository and run docker-compose: 
 `docker-compose build` 
 #### 3 Step: 
--Start a localhost server: 
+-Start a container: 
 `docker-compose up` 
 #### Create superuser:
 When server is running, write in another console (in repo folder) \

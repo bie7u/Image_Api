@@ -1,89 +1,59 @@
-# Project Name
-> Outline a brief description of your project.
-> Live demo [_here_](https://www.example.com). <!-- If you have the project hosted somewhere, include the link here. -->
+# HaxOcean - recruitment task.
 
 ## Table of Contents
 * [General Info](#general-information)
 * [Technologies Used](#technologies-used)
-* [Features](#features)
-* [Screenshots](#screenshots)
+* [Authentication](#Authentication)
 * [Setup](#setup)
-* [Usage](#usage)
-* [Project Status](#project-status)
-* [Room for Improvement](#room-for-improvement)
-* [Acknowledgements](#acknowledgements)
+* [Common issue](#common-issue)
 * [Contact](#contact)
 <!-- * [License](#license) -->
 
 
 ## General Information
-- Provide general information about your project here.
-- What problem does it (intend to) solve?
-- What is the purpose of your project?
-- Why did you undertake it?
-<!-- You don't have to answer all the questions - just the ones relevant to your project. -->
+- This project is using a drf_spectacular to create a documentation. I also used flake8 to write a code with PEP8 standard. All project is in docker. In past,
+- I didn't have a lot of experience with containers.
 
 
 ## Technologies Used
-- Tech 1 - version 1.0
-- Tech 2 - version 2.0
-- Tech 3 - version 3.0
+- Django,
+- Django Rest Framework,
+- DRF Spectacular,
+- Celery,
+- Docker,
+- Flake8
 
 
-## Features
-List the ready features here:
-- Awesome feature 1
-- Awesome feature 2
-- Awesome feature 3
+## Authentication
 
-
-## Screenshots
-![Example screenshot](./img/screenshot.png)
-<!-- If you have screenshots you'd like to share, include them here. -->
+I used token authentication, so firstly You should create a user account in django-admin panel. Don't forget add a user group!.
+![ssauthuser1](https://user-images.githubusercontent.com/83407728/174156829-a555731b-aa56-497d-9c14-9c7cdb4ae784.png)
+Next, you can use a api/docs to get a token:
+![token](https://user-images.githubusercontent.com/83407728/174157200-4147b4d9-53f4-4fc3-a1f8-e307b53e522b.png)
+This token give you authentication. You can use this to login in drf_spectacular. Notice, that before authtoken you must write 'Token'.
+![login](https://user-images.githubusercontent.com/83407728/174157720-7aa12b88-7dd5-4ca6-8e15-97e499448ba5.png)
+Now you can pretty easy test my API.
 
 
 ## Setup
-What are the project requirements/dependencies? Where are they listed? A requirements.txt or a Pipfile.lock file perhaps? Where is it located?
-
-Proceed to describe how to install / setup one's local environment / get started with the project.
-
-
-## Usage
-How does one go about using it?
-Provide various use cases and code examples here.
-
-`write-your-code-here`
-
-
-## Project Status
-Project is: _in progress_ / _complete_ / _no longer being worked on_. If you are no longer working on it, provide reasons why.
+#### 1 Step: 
+Clone a repository: 
+`git clone https://github.com/bie7u/HexOcean_Exercise.git` 
+#### 2 Step: 
+-Navigate to local procject repository and run docker-compose: 
+`docker-compose build` 
+#### 3 Step: 
+-Start a localhost server: 
+`docker-compose up` 
+#### Create superuser:
+When server is running, write in another console (in repo folder) \
+`docker-compose run --rm app sh -c "python manage.py createsuperuser"` 
 
 
-## Room for Improvement
-Include areas you believe need improvement / could be improved. Also add TODOs for future development.
-
-Room for improvement:
-- Improvement to be done 1
-- Improvement to be done 2
-
-To do:
-- Feature to be added 1
-- Feature to be added 2
-
-
-## Acknowledgements
-Give credit here.
-- This project was inspired by...
-- This project was based on [this tutorial](https://www.example.com).
-- Many thanks to...
-
+## Common issue
+If you first time login on app and want to generate auth token you can have probably this issue:
+![Zrzut ekranu 2022-06-16 214917](https://user-images.githubusercontent.com/83407728/174158585-cc76f74f-1879-41b0-a610-bfa55bc1f84e.png)
+In this case you must delete cookies from our website. Fot this task, you can use EditThisCookie Chrome plug.
 
 ## Contact
-Created by [@flynerdpl](https://www.flynerd.pl/) - feel free to contact me!
-
-
-<!-- Optional -->
-<!-- ## License -->
-<!-- This project is open source and available under the [... License](). -->
-
-<!-- You don't have to include all sections - just the one's relevant to your project -->
+Created by [krystiantsp@gmail.com](krystiantsp@gmail.com) - feel free to contact me!

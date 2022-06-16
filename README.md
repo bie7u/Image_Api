@@ -12,7 +12,7 @@
 
 ## General Information
 - This project is using a drf_spectacular to create a documentation. I also used flake8 to write a code with PEP8 standard. All project is in docker. In past,
-- I didn't have a lot of experience with containers.
+I didn't have a lot of experience with containers.
 
 
 ## Technologies Used

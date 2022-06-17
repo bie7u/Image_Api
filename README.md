@@ -23,6 +23,9 @@ I didn't have a lot of experience with containers.
 - Docker,
 - Flake8
 
+If you want to generate expiry link there are type of images:
+![kind](https://user-images.githubusercontent.com/83407728/174257588-8be0b1b8-e3a2-4b45-afa6-81b71e0f32e1.png)
+
 
 ## Authentication
 

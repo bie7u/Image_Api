@@ -1,4 +1,4 @@
-# HaxOcean - recruitment task.
+# Image API - Django Rest Framework 
 
 ## Table of Contents
 * [General Info](#general-information)

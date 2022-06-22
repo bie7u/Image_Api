@@ -17,6 +17,7 @@ from core.functions import (give_yours_images,
                             give_links_to_images,
                             get_height)
 
+from .tasks import delete_expired_url
 
 class ImageViewSet(viewsets.GenericViewSet):
     """Manage a image in APIs."""
@@ -72,7 +73,8 @@ class ImageViewSet(viewsets.GenericViewSet):
                                               model=TimeGenerateImg,
                                               time_of_expiry=time_of_expiry,
                                               user=request.user)
-
+            print(link.id)
+            delete_expired_url.apply_async(kwargs={'id': link.id}, countdown=int(time_of_expiry))
             return Response({'expiry_link':
                              request.build_absolute_uri(link.image.url)})
 

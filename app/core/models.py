@@ -173,7 +173,7 @@ class TimeGenerateImg(models.Model):
                                   max_length=255,
                                   choices=KIND_OF_IMAGE,
                                   default=KIND_OF_IMAGE[0][0])
-    time_of_expiry = models.IntegerField(validators=[MinValueValidator(300),
+    time_of_expiry = models.IntegerField(validators=[MinValueValidator(10),
                                          MaxValueValidator(30000)])
     added_at = models.DateTimeField(auto_now_add=True)
 
